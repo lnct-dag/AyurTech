@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2 style="margin: 0;">Doctor Dashboard</h2>
+        <p style="color: #6b7280; margin-top: 0.5rem;">Manage your patients and their Ayurvedic diet plans</p>
+    </div>
+    <div>
+        <a href="/add_patient" class="btn">Add Patient</a>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Your Patients</h3>
+    {% if patients %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age / Gender</th>
+                    <th>BMI</th>
+                    <th>Dosha Imbalance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in patients %}
+                <tr>
+                    <td><strong>{{ p.name }}</strong></td>
+                    <td>{{ p.age }} / {{ p.gender }}</td>
+                    <td>
+                        <span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">
+                            {{ p.bmi }}
+                        </span>
+                    </td>
+                    <td>{{ p.dosha_imbalance }}</td>
+                    <td>
+                        <a href="/diet_plan/{{ p.id }}" style="color: #059669; font-weight: bold; text-decoration: none;">View Diet Plan</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: #6b7280; text-align: center; padding: 2rem;">No patients found. Add a patient to get started.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+    <a href="/doctor_dashboard" class="btn btn-secondary">&larr; Back</a>
+    <h2>Ayurvedic Recipe Analyzer</h2>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3>Input Recipe</h3>
+        <form method="POST">
+            <textarea name="recipe_text" class="form-control" rows="10" placeholder="Paste recipe ingredients here... (e.g., '1 cup basmati rice, 2 tbsp ghee, 1 tsp cumin seeds, boiled in water')" required></textarea>
+            <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Analyze Ayurvedic Properties</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Analysis Results</h3>
+        {% if result %}
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: #6b7280; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.5rem;">Detected Ingredients</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    {% for ing in result.ingredients %}
+                        <span style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8rem;">{{ ing }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: #6b7280; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.5rem;">Macronutrients</h4>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; text-align: center;">
+                    <div style="background: #f9fafb; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 6px;">
+                        <span style="display: block; font-size: 0.75rem; color: #6b7280;">Calories</span>
+                        <strong>{{ result.nutrition.calories }}</strong>
+                    </div>
+                    <div style="background: #f9fafb; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 6px;">
+                        <span style="display: block; font-size: 0.75rem; color: #6b7280;">Protein</span>
+                        <strong>{{ result.nutrition.protein }}g</strong>
+                    </div>
+                    <div style="background: #f9fafb; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 6px;">
+                        <span style="display: block; font-size: 0.75rem; color: #6b7280;">Carbs</span>
+                        <strong>{{ result.nutrition.carbs }}g</strong>
+                    </div>
+                    <div style="background: #f9fafb; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 6px;">
+                        <span style="display: block; font-size: 0.75rem; color: #6b7280;">Fat</span>
+                        <strong>{{ result.nutrition.fat }}g</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h4 style="color: #6b7280; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 0.5rem;">Ayurvedic Profile</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                    <div style="background: #fff7ed; border: 1px solid #ffedd5; padding: 0.75rem; border-radius: 6px;">
+                        <span style="display: block; font-size: 0.75rem; color: #9a3412;">Rasa (Taste)</span>
+                        <strong>{{ result.ayurveda.rasa }}</strong>
+                    </div>
+                    <div style="background: #fef2f2; border: 1px solid #fee2e2; padding: 0.75rem; border-radius: 6px;">
+                        <span style="display: block; font-size: 0.75rem; color: #991b1b;">Virya (Potency)</span>
+                        <strong>{{ result.ayurveda.virya }}</strong>
+                    </div>
+                    <div style="background: #fdf4ff; border: 1px solid #fae8ff; padding: 0.75rem; border-radius: 6px;">
+                        <span style="display: block; font-size: 0.75rem; color: #86198f;">Vipaka (Post-digestive)</span>
+                        <strong>{{ result.ayurveda.vipaka }}</strong>
+                    </div>
+                    <div style="background: #f0f9ff; border: 1px solid #e0f2fe; padding: 0.75rem; border-radius: 6px;">
+                        <span style="display: block; font-size: 0.75rem; color: #075985;">Guna (Quality)</span>
+                        <strong>{{ result.ayurveda.guna }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div style="height: 200px; display: flex; align-items: center; justify-content: center; border: 2px dashed #e5e7eb; border-radius: 8px;">
+                <p style="color: #9ca3af; text-align: center;">Enter a recipe to see its Ayurvedic profile</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

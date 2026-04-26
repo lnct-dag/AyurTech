@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2 style="margin-top: 0;">Welcome, {{ session.get('name') }}!</h2>
+    {% if patient %}
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <span style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">
+                BMI: {{ patient.bmi }}
+            </span>
+            <span style="background: #f3e8ff; color: #7e22ce; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">
+                Dosha Imbalance: {{ patient.dosha_imbalance }}
+            </span>
+        </div>
+    {% else %}
+        <p>No health profile found. Please ask your doctor to add you to the system with the exact same name.</p>
+    {% endif %}
+</div>
+
+{% if diet_plan %}
+    <div class="card">
+        <h3 style="border-bottom: 2px solid #059669; padding-bottom: 0.5rem; display: inline-block;">Today's Diet Plan</h3>
+        <div class="grid" style="margin-top: 1.5rem;">
+            {% for meal_name, meal_data in diet_plan.meals.items() %}
+            <div class="meal-card" style="display: flex; flex-direction: column;">
+                <h4 style="color: #065f46; margin-top: 0;">{{ meal_name }}</h4>
+                <p style="font-weight: bold; font-size: 1.1rem; margin: 0.5rem 0;">{{ meal_data.food }}</p>
+                <p style="color: #4b5563; font-style: italic; font-size: 0.9rem; flex-grow: 1;">"{{ meal_data.explanation }}"</p>
+                <button class="btn btn-secondary" onclick="alert('Marked {{ meal_name }} as completed!')" style="width: 100%; margin-top: 1rem;">Mark Completed</button>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div style="background-color: #eff6ff; border: 1px solid #bfdbfe; padding: 1.5rem; border-radius: 8px; margin-top: 2rem;">
+            <h4 style="color: #1e3a8a; margin-top: 0; margin-bottom: 1rem;">Ayurvedic Principles for You</h4>
+            <div class="grid">
+                <div>
+                    <p style="color: #b91c1c; font-weight: bold; margin-top: 0; margin-bottom: 0.25rem;">Avoid:</p>
+                    <p style="margin: 0;">{{ diet_plan.principles.avoid }}</p>
+                </div>
+                <div>
+                    <p style="color: #047857; font-weight: bold; margin-top: 0; margin-bottom: 0.25rem;">Prefer:</p>
+                    <p style="margin: 0;">{{ diet_plan.principles.prefer }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% elif patient %}
+    <div class="card" style="text-align: center; padding: 3rem;">
+        <p style="color: #6b7280; font-size: 1.1rem;">Your doctor has not generated a diet plan for you yet.</p>
+    </div>
+{% endif %}
+{% endblock %}
