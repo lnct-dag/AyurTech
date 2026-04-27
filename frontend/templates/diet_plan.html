@@ -2,44 +2,48 @@
 
 {% block content %}
 <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
-    <a href="/doctor_dashboard" class="btn btn-secondary">&larr; Back</a>
-    <h2>Diet Plan for {{ patient.name }}</h2>
+    <a href="/doctor_dashboard" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+    <h2><i class="fas fa-utensils"></i> Diet Plan for {{ patient.name }}</h2>
 </div>
 
 {% if not diet_plan %}
     <div class="card" style="text-align: center;">
-        <h3 style="color: #374151;">No Diet Plan Generated</h3>
+        <i class="fas fa-robot" style="font-size: 4rem; color: #059669; margin-bottom: 1rem;"></i>
+        <h3 style="color: #374151;"><i class="fas fa-clipboard-list"></i> No Diet Plan Generated</h3>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">This patient does not have an active diet plan. Click below to generate an AI Ayurvedic plan.</p>
         <form action="/generate_diet_plan/{{ patient.id }}" method="POST">
-            <button type="submit" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;">&#10024; Generate AI Diet Plan</button>
+            <button type="submit" class="btn" style="font-size: 1.1rem; padding: 1rem 2rem;"><i class="fas fa-magic"></i> Generate AI Diet Plan</button>
         </form>
     </div>
 {% else %}
     <div class="card" style="background-color: #f0fdf4; border: 1px solid #a7f3d0;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #d1fae5; padding-bottom: 1rem; margin-bottom: 1rem;">
-            <h3 style="color: #065f46; margin: 0;">Therapeutic Approach</h3>
+            <h3 style="color: #065f46; margin: 0;"><i class="fas fa-heartbeat"></i> Therapeutic Approach</h3>
             <span style="background: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; color: #047857; font-size: 0.9rem;">
-                Target: Balance {{ diet_plan.imbalance }}
+                <i class="fas fa-bullseye"></i> Target: Balance {{ diet_plan.imbalance }}
             </span>
         </div>
         <div class="grid">
             <div style="background: white; padding: 1rem; border-radius: 8px;">
-                <p style="color: #b91c1c; font-weight: bold; margin-top: 0;">Avoid</p>
+                <p style="color: #b91c1c; font-weight: bold; margin-top: 0;"><i class="fas fa-times-circle"></i> Avoid</p>
                 <p style="margin-bottom: 0;">{{ diet_plan.principles.avoid }}</p>
             </div>
             <div style="background: white; padding: 1rem; border-radius: 8px;">
-                <p style="color: #047857; font-weight: bold; margin-top: 0;">Prefer</p>
+                <p style="color: #047857; font-weight: bold; margin-top: 0;"><i class="fas fa-check-circle"></i> Prefer</p>
                 <p style="margin-bottom: 0;">{{ diet_plan.principles.prefer }}</p>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h3>Daily Meal Prescription</h3>
+        <h3><i class="fas fa-calendar-day"></i> Daily Meal Prescription</h3>
         <div class="grid">
             {% for meal_name, meal_data in diet_plan.meals.items() %}
             <div class="meal-card">
-                <h4 style="color: #065f46; margin-top: 0;">{{ meal_name }}</h4>
+                <h4 style="color: #065f46; margin-top: 0;">
+                    {% if meal_name == 'Breakfast' %}<i class="fas fa-coffee"></i>{% elif meal_name == 'Lunch' %}<i class="fas fa-utensils"></i>{% else %}<i class="fas fa-moon"></i>{% endif %}
+                    {{ meal_name }}
+                </h4>
                 <p style="font-weight: bold; font-size: 1.1rem; margin: 0.5rem 0;">{{ meal_data.food }}</p>
                 <p style="color: #4b5563; font-style: italic; font-size: 0.9rem;">"{{ meal_data.explanation }}"</p>
             </div>
@@ -48,7 +52,7 @@
         
         <div style="text-align: right; margin-top: 1.5rem; border-top: 1px solid #e5e7eb; padding-top: 1.5rem;">
             <form action="/generate_diet_plan/{{ patient.id }}" method="POST">
-                <button type="submit" class="btn btn-secondary">Regenerate Plan</button>
+                <button type="submit" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Regenerate Plan</button>
             </form>
         </div>
     </div>

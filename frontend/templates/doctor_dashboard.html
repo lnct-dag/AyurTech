@@ -3,47 +3,88 @@
 {% block content %}
 <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
     <div>
-        <h2 style="margin: 0;">Doctor Dashboard</h2>
+        <h2 style="margin: 0;"><i class="fas fa-user-md"></i> Doctor Dashboard</h2>
         <p style="color: #6b7280; margin-top: 0.5rem;">Manage your patients and their Ayurvedic diet plans</p>
     </div>
     <div>
-        <a href="/add_patient" class="btn">Add Patient</a>
+        <a href="/add_patient" class="btn"><i class="fas fa-plus"></i> Add Patient</a>
     </div>
 </div>
 
 <div class="card">
-    <h3>Your Patients</h3>
+    <h3><i class="fas fa-users"></i> Your Patients</h3>
     {% if patients %}
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Age / Gender</th>
-                    <th>BMI</th>
-                    <th>Dosha Imbalance</th>
-                    <th>Actions</th>
+                    <th><i class="fas fa-user"></i> Name</th>
+                    <th><i class="fas fa-birthday-cake"></i> Age / Gender</th>
+                    <th><i class="fas fa-ruler-vertical"></i> Height / Weight</th>
+                    <th><i class="fas fa-weight"></i> BMI</th>
+                    <th><i class="fas fa-spa"></i> Prakriti</th>
+                    <th><i class="fas fa-balance-scale"></i> Dosha Imbalance</th>
+                    <th><i class="fas fa-stethoscope"></i> Medical Conditions</th>
+                    <th><i class="fas fa-allergies"></i> Allergies</th>
+                    <th><i class="fas fa-cogs"></i> Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for p in patients %}
                 <tr>
-                    <td><strong>{{ p.name }}</strong></td>
+                    <td><strong><i class="fas fa-user-circle"></i> {{ p.name }}</strong></td>
                     <td>{{ p.age }} / {{ p.gender }}</td>
+                    <td>{{ p.height }} cm / {{ p.weight }} kg</td>
                     <td>
                         <span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">
                             {{ p.bmi }}
                         </span>
                     </td>
-                    <td>{{ p.dosha_imbalance }}</td>
+                    <td>{{ p.prakriti }}</td>
                     <td>
-                        <a href="/diet_plan/{{ p.id }}" style="color: #059669; font-weight: bold; text-decoration: none;">View Diet Plan</a>
+                        <span style="background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">
+                            {{ p.dosha_imbalance }}
+                        </span>
+                    </td>
+                    <td>{{ p.medical_conditions or 'None' }}</td>
+                    <td>{{ p.allergies or 'None' }}</td>
+                    <td>
+                        <a href="/diet_plan/{{ p.id }}" class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;"><i class="fas fa-utensils"></i> Diet Plan</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p style="color: #6b7280; text-align: center; padding: 2rem;">No patients found. Add a patient to get started.</p>
+        <p style="color: #6b7280; text-align: center; padding: 2rem;"><i class="fas fa-user-plus"></i> No patients found. Add a patient to get started.</p>
     {% endif %}
+</div>
+
+<div class="grid" style="margin-top: 2rem;">
+    <div class="card">
+        <h3><i class="fas fa-chart-bar"></i> Quick Stats</h3>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
+            <div style="background: #f0fdf4; padding: 1rem; border-radius: 8px;">
+                <i class="fas fa-users" style="font-size: 2rem; color: #059669; margin-bottom: 0.5rem; display: block;"></i>
+                <span style="display: block; font-size: 2rem; font-weight: bold; color: #059669;">{{ patients|length }}</span>
+                <span style="color: #6b7280;">Total Patients</span>
+            </div>
+            <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px;">
+                <i class="fas fa-wind" style="font-size: 2rem; color: #0284c7; margin-bottom: 0.5rem; display: block;"></i>
+                <span style="display: block; font-size: 1.5rem; font-weight: bold; color: #0284c7;">
+                    {% set vata_count = patients|selectattr('dosha_imbalance', 'equalto', 'Vata')|list|length %}
+                    {{ vata_count }}
+                </span>
+                <span style="color: #6b7280;">Vata Imbalance</span>
+            </div>
+            <div style="background: #fef2f2; padding: 1rem; border-radius: 8px;">
+                <i class="fas fa-fire" style="font-size: 2rem; color: #dc2626; margin-bottom: 0.5rem; display: block;"></i>
+                <span style="display: block; font-size: 1.5rem; font-weight: bold; color: #dc2626;">
+                    {% set pitta_count = patients|selectattr('dosha_imbalance', 'equalto', 'Pitta')|list|length %}
+                    {{ pitta_count }}
+                </span>
+                <span style="color: #6b7280;">Pitta Imbalance</span>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

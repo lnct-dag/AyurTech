@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AyurTech</title>
+    <title>AyurTech - AI Ayurvedic Diet Planning</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <nav>
-        <h2>AyurTech</h2>
+        <div class="nav-brand">
+            <i class="fas fa-leaf"></i>
+            <h2>AyurTech</h2>
+        </div>
         <div>
             {% if session.get('user_id') %}
-                <span>Welcome, {{ session.get('name') }} ({{ session.get('role') }})</span>
+                <span><i class="fas fa-user"></i> {{ session.get('name') }} ({{ session.get('role') }})</span>
                 {% if session.get('role') == 'doctor' %}
-                    <a href="/doctor_dashboard">Dashboard</a>
-                    <a href="/recipe_analyzer">Recipe Analyzer</a>
+                    <a href="/doctor_dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="/recipe_analyzer"><i class="fas fa-flask"></i> Recipe Analyzer</a>
                 {% endif %}
-                <a href="/logout">Logout</a>
+                <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             {% else %}
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
+                <a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="/register"><i class="fas fa-user-plus"></i> Register</a>
             {% endif %}
         </div>
     </nav>
@@ -35,5 +39,9 @@
 
         {% block content %}{% endblock %}
     </div>
+
+    <footer>
+        <p><i class="fas fa-code"></i> Created By: Bhoomi Singh (LNCEBTC11069) and Mansi Vishwakarma (LNCEBTC21017)</p>
+    </footer>
 </body>
 </html>
